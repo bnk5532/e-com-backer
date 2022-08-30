@@ -6,12 +6,12 @@ CREATE DATABASE ecommerce_db;
 
 USE ecommerce_db;
 
-CREATE TABLE category (
+CREATE TABLE Category (
 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 category_name TEXT NOT NULL
 );
 
-CREATE TABLE product (
+CREATE TABLE Product (
 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 product_name TEXT NOT NULL,
 price DECIMAL(10,2) NOT NULL,
@@ -21,20 +21,20 @@ stock INTEGER NOT NULL DEFAULT 10,
 category_id INTEGER, 
     INDEX fk_cat (category_id), 
     FOREIGN KEY (category_id)
-    REFERENCES category(id)
+    REFERENCES Category(id)
 );
 
-CREATE TABLE bowl (
+CREATE TABLE Tag (
 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 tag_name TEXT
 );
 
-CREATE TABLE product_tag (
+CREATE TABLE ProductTag (
 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 product_id INTEGER, 
     INDEX fk_product (product_id),
     FOREIGN KEY (product_id)
-    REFERENCES product(id)
+    REFERENCES Product(id)
 -- tag_id INDEX fk_tag (tag_id),
 --     FOREIGN KEY (tag_id)
 --     REFERENCES tag(id)
