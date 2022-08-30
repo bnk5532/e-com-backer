@@ -34,7 +34,7 @@ Product.init(
       type: DataTypes.INTEGER,
       default: 10,
       validate: {
-        isNumber: true
+        isNumeric: true
       }
     }
   },
@@ -42,7 +42,8 @@ Product.init(
     category_id: {
       type: DataTypes.INTEGER,
       references: {
-        //needs to ref foreign key
+        model: 'category',
+        key: 'id'
       }
     }
   },

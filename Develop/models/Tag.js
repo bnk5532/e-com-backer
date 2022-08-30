@@ -13,7 +13,7 @@ Tag.init(
     }
   },
   {
-    tag: {
+    tag_name: {
       type: DataTypes.STRING
     }
   },
