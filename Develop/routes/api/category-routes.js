@@ -7,18 +7,7 @@ router.get("/", (req, res) => {
   // find all categories
   // be sure to include its associated Products
   Category.findAll({
-    include: [
-      {
-        model: Product,
-        attributes: [
-          "id",
-          "product_name",
-          "price",
-          "stock",
-          "category_id",
-      ],
-      },
-    ],
+    include: [Product]
   })
     .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
@@ -34,18 +23,7 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-    include: [
-      {
-        model: Product,
-        attributes: [
-          "id",
-          "product_name",
-          "price",
-          "stock",
-          "category_id",
-        ],
-      },
-    ],
+    include: [Product]
   })
     .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
@@ -81,6 +59,7 @@ router.put("/:id", (req, res) => {
       // get list of current tag_ids
       const categoryFlagId = categoryFlag.map(({ id }) => id);
       // create filtered list of new tag_ids
+      if(req.body.catIds){
       const newCategory = req.body.catIds
         .filter((id) => !categoryFlagId.includes(id))
         .map((id) => {
@@ -98,7 +77,7 @@ router.put("/:id", (req, res) => {
       return Promise.all([
         Category.destroy({ where: { id: categoryToRemove } }),
         Category.bulkCreate(newCategory),
-      ]);
+      ])};
     })
     .then((updatedCategories) => res.json(updatedCategories))
     .catch((err) => {

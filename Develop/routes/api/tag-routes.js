@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
   // find all tags
   // be sure to include its associated Tag data
   Tag.findAll({
-    include: Product
+    include: [Product]
   })
     .then((dbTagData) => res.json(dbTagData))
     .catch((err) => {
@@ -23,7 +23,7 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-    include: Product
+    include: [Product]
   })
     .then((dbTagData) => res.json(dbTagData))
     .catch((err) => {
@@ -59,6 +59,7 @@ router.put("/:id", (req, res) => {
       // get list of current tag_ids
       const flagTagIds = Tags.map(({ id }) => id);
       // create filtered list of new tag_ids
+      if (req.body.tagIds){
       const newTags = req.body.tagIds
         .filter((id) => !flagTagIds.includes(id))
         .map((id) => {
@@ -76,11 +77,11 @@ router.put("/:id", (req, res) => {
       return Promise.all([
         Tag.destroy({ where: { id: tagsToRemove } }),
         Tag.bulkCreate(newTags),
-      ]);
+      ])};
     })
     .then((updatedTags) => res.json(updatedTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
