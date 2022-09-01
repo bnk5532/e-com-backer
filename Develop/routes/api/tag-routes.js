@@ -35,16 +35,6 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   Tag.create(req.body)
     .then((tag) => {
-      // if there's tag tags, we need to create pairings to bulk create in the tagTag model
-      if (req.body.tagIds.length) {
-        const tagTagIdArr = req.body.tagIds.map((tag_id) => {
-          return {
-            tag_id: tag.id,
-          };
-        });
-        return tagTag.bulkCreate(tagTagIdArr);
-      }
-      // if no tag tags, just respond
       res.status(200).json(tag);
     })
     .then((tagTagIds) => res.status(200).json(tagTagIds))
