@@ -7,12 +7,7 @@ router.get("/", (req, res) => {
   // find all tags
   // be sure to include its associated Tag data
   Tag.findAll({
-    include: [
-      {
-        model: ProductTag,
-        attributes: ["tag_id"],
-      },
-    ],
+    include: Product
   })
     .then((dbTagData) => res.json(dbTagData))
     .catch((err) => {
@@ -28,12 +23,7 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-    include: [
-      {
-        model: ProductTag,
-        attributes: ["tag_id"],
-      },
-    ],
+    include: Product
   })
     .then((dbTagData) => res.json(dbTagData))
     .catch((err) => {
@@ -42,17 +32,39 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// router.post("/", (req, res) => {
+//   // create a new tag
+//   Tag.create({
+//     tag_name: req.body.tag_name,
+//   })
+//     .then((dbTagData) => res.json(dbTagData))
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(500).json(err);
+//     });
+// });
+
 router.post("/", (req, res) => {
-  // create a new tag
-  Tag.create({
-    tag_name: req.body.tag_name,
-  })
-    .then((dbTagData) => res.json(dbTagData))
+  Tag.create(req.body)
+    .then((tag) => {
+      // if there's tag tags, we need to create pairings to bulk create in the tagTag model
+      if (req.body.tagIds.length) {
+        const tagTagIdArr = req.body.tagIds.map((tag_id) => {
+          return {
+            tag_id: tag.id,
+          };
+        });
+        return tagTag.bulkCreate(tagTagIdArr);
+      }
+      // if no tag tags, just respond
+      res.status(200).json(tag);
+    })
+    .then((tagTagIds) => res.status(200).json(tagTagIds))
     .catch((err) => {
       console.log(err);
-      res.status(500).json(err);
+      res.status(400).json(err);
     });
-});
+  });
 
 router.put("/:id", (req, res) => {
   // update a tag's name by its `id` value
