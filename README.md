@@ -14,7 +14,7 @@ A backend application built to support the inventory management for an e-commerc
 * Sequelize
 
 ## Demo Video
-[Click here for a video demo!](https://watch.screencastify.com/v/eyPqAJKOpx99h8iUwfSa)
+[Click here for a video demo!](https://watch.screencastify.com/v/ze3p72pBbNucsAjn6SJc)
 
 ## Contributors
 Brian King
